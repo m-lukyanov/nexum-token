@@ -5,7 +5,6 @@ pragma solidity ^0.8.0;
 import "./token/ERC20.sol";
 import "./extensions/ERC20Burnable.sol";
 import "./extensions/ERC20Pausable.sol";
-import "./extensions/ERC20Capped.sol";
 import "./access/AccessControlEnumerable.sol";
 import "./utils/Context.sol";
 
@@ -61,7 +60,7 @@ contract Nexums is Context, AccessControlEnumerable, ERC20Burnable, ERC20Pausabl
      * @dev See {ERC20-_mint}.
      */
     function _mint(address account, uint256 amount) internal virtual override {
-        require(ERC20.totalSupply() + amount <= cap(), "ERC20Capped: cap exceeded");
+        require(ERC20.totalSupply() + amount <= cap(), "Nexums: cap exceeded");
         super._mint(account, amount);
     }
 
@@ -75,7 +74,7 @@ contract Nexums is Context, AccessControlEnumerable, ERC20Burnable, ERC20Pausabl
      * - the caller must have the `MINTER_ROLE`.
      */
     function mint(address to, uint256 amount) public virtual {
-        require(hasRole(MINTER_ROLE, _msgSender()), "ERC20PresetMinterPauser: must have minter role to mint");
+        require(hasRole(MINTER_ROLE, _msgSender()), "Nexums: must have minter role to mint");
         _mint(to, amount);
     }
 
@@ -89,7 +88,7 @@ contract Nexums is Context, AccessControlEnumerable, ERC20Burnable, ERC20Pausabl
      * - the caller must have the `PAUSER_ROLE`.
      */
     function pause() public virtual {
-        require(hasRole(PAUSER_ROLE, _msgSender()), "ERC20PresetMinterPauser: must have pauser role to pause");
+        require(hasRole(PAUSER_ROLE, _msgSender()), "Nexums: must have pauser role to pause");
         _pause();
     }
 
@@ -103,7 +102,7 @@ contract Nexums is Context, AccessControlEnumerable, ERC20Burnable, ERC20Pausabl
      * - the caller must have the `PAUSER_ROLE`.
      */
     function unpause() public virtual {
-        require(hasRole(PAUSER_ROLE, _msgSender()), "ERC20PresetMinterPauser: must have pauser role to unpause");
+        require(hasRole(PAUSER_ROLE, _msgSender()), "Nexums: must have pauser role to unpause");
         _unpause();
     }
 
